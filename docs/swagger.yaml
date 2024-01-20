@@ -1,0 +1,100 @@
+basePath: /api/people
+definitions:
+  github_com_DrNikita_People_internal_model.Persons:
+    properties:
+      age:
+        type: integer
+      countryId:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: People service test task
+  title: People service
+  version: "3.0"
+paths:
+  /find-users:
+    get:
+      consumes:
+      - application/json
+      description: get users by filters
+      operationId: get-users
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Size
+        in: query
+        name: perPage
+        type: integer
+      - description: Sort field
+        in: query
+        name: sortBy
+        type: string
+      - description: Direction
+        in: query
+        name: sortDirection
+        type: string
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: Surname
+        in: query
+        name: surname
+        type: string
+      - description: Patronymic
+        in: query
+        name: patronymic
+        type: string
+      - description: age
+        in: query
+        name: age
+        type: integer
+      - description: gender
+        in: query
+        name: gender
+        type: string
+      - description: country
+        in: query
+        name: country
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_DrNikita_People_internal_model.Persons'
+            type: array
+      summary: Get users by filters
+      tags:
+      - Get users
+swagger: "2.0"
