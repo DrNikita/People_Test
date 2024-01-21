@@ -7,16 +7,19 @@ import (
 )
 
 type Config struct {
-	DbHost       string `map-structure:"DB_HOST"`
-	DbPort       string `map-structure:"DB_PORT"`
-	DbName       string `map-structure:"DB_NAME"`
-	DbUser       string `map-structure:"DB_USER"`
-	DbPass       string `map-structure:"DB_PASS"`
-	DbSslMode    string `map-structure:"DB_SSLMODE"`
-	AllowOrigins string `map-structure:"ALLOW_ORIGINS"`
-	AppPort      string `map-structure:"APP_PORT"`
-	Url          string `map-structure:"URL"`
-	ApiKey       string `map-structure:"API_KEY"`
+	DbHost       string
+	DbPort       string
+	DbName       string
+	DbUser       string
+	DbPass       string
+	DbSslMode    string
+	AllowOrigins string
+	AppPort      string
+	Url          string
+	ApiKey       string
+	AgeUrl       string
+	GenderUrl    string
+	CountryUrl   string
 }
 
 var conf Config
@@ -38,7 +41,11 @@ func init() {
 		DbPass:       getEnv("DB_PASS", ""),
 		DbSslMode:    getEnv("DB_SSLMODE", ""),
 		AllowOrigins: getEnv("ALLOW_ORIGINS", ""),
+		AgeUrl:       getEnv("AGE_URL", ""),
+		GenderUrl:    getEnv("GENDER_URL", ""),
+		CountryUrl:   getEnv("COUNTRY_URL", ""),
 	}
+	log.Info("configuration loaded")
 }
 
 func getEnv(key string, defaultVal string) string {
