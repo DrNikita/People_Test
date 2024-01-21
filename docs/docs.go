@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/find-users": {
-            "get": {
-                "description": "get users by filters",
+        "/create-person": {
+            "post": {
+                "description": "create person",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,10 +25,89 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Get users"
+                    "People"
                 ],
-                "summary": "Get users by filters",
-                "operationId": "get-users",
+                "summary": "Create person",
+                "operationId": "create-person",
+                "parameters": [
+                    {
+                        "description": "Person",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/delete-person/{id}": {
+            "delete": {
+                "description": "delete person by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "Delete person",
+                "operationId": "delete-person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/find-persons": {
+            "get": {
+                "description": "get people by filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get people by filters",
+                "operationId": "get-people",
                 "parameters": [
                     {
                         "type": "integer",
@@ -97,8 +176,56 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Persons"
+                                "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Person"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/update-person/{id}": {
+            "patch": {
+                "description": "Update person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "Update person",
+                "operationId": "update-person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Person",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.SupplementedPerson"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_DrNikita_People_internal_model.Response"
                         }
                     }
                 }
@@ -106,26 +233,46 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_DrNikita_People_internal_model.Persons": {
+        "github_com_DrNikita_People_internal_model.Person": {
             "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "patronymic": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_DrNikita_People_internal_model.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "meta": {}
+            }
+        },
+        "github_com_DrNikita_People_internal_model.SupplementedPerson": {
+            "type": "object",
+            "required": [
+                "name",
+                "surname"
+            ],
             "properties": {
                 "age": {
                     "type": "integer"
                 },
-                "countryId": {
+                "country_id": {
                     "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "gender": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -135,21 +282,6 @@ const docTemplate = `{
                 },
                 "surname": {
                     "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
                 }
             }
         }

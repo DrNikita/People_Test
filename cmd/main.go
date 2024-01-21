@@ -4,8 +4,6 @@ import (
 	"github.com/DrNikita/People/docs"
 	"github.com/DrNikita/People/internal/db"
 	"github.com/DrNikita/People/internal/handler"
-	"github.com/DrNikita/People/internal/model"
-	"github.com/DrNikita/People/internal/service/migration"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -32,13 +30,11 @@ func main() {
 		panic(err)
 	}
 
-	if err := migration.MigrateTable(&model.Persons{}); err != nil {
-		log.Error("error creating table persons")
-		panic(err)
-	}
-
 	api := router.Group("/api/people")
-	api.GET("/find-users", handler.FindPeople)
+	api.GET("/find-persons", handler.FindPeople)
+	api.POST("/create-person", handler.CreatePerson)
+	api.PATCH("/update-person/:id", handler.UpdatePerson)
+	api.DELETE("/delete-person/:id", handler.DeletePerson)
 
 	if err := router.Run(":" + configs.AppPort); err != nil {
 		panic(err)
