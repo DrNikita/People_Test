@@ -22,7 +22,7 @@ func InitDB(config Config) error {
 		log.Error(err)
 		return err
 	}
-	log.Error("connected to db: " + config.DbName)
+	log.Debug("connected to db: ", config.DbName)
 
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(100)
@@ -31,6 +31,7 @@ func InitDB(config Config) error {
 	sqlDB.SetConnMaxIdleTime(time.Hour)
 	return err
 }
+
 func GetDBInstance() *gorm.DB {
 	return db
 }

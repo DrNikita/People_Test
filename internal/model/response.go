@@ -56,14 +56,8 @@ func (r *Response) ErrorResponse(err error) Response {
 	}
 }
 
-func (r *Response) SuccessResponse(message interface{}) Response {
+func (r *Response) MessageResponse(message interface{}) Response {
 	return Response{
 		Meta: message,
 	}
 }
-
-//func ErrorHandler(c *gin.Context, err error) {
-//	goErr := status.Wrap(err, "2")
-//	httpResponse := Response{ErrorCode: goErr.Error()}
-//	c.AbortWithStatusJSON(500, httpResponse)
-//}
