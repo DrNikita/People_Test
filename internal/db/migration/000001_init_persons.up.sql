@@ -1,10 +1,13 @@
-CREATE TABLE people.public.people(
-    id integer,
-    name varchar(255),
-    surname varchar(255),
+CREATE TABLE people.public.persons (
+    id SERIAL NOT NULL,
+    name varchar(255) NOT NULL ,
+    surname varchar(255) NOT NULL ,
     patronymic varchar(255),
     age integer,
     gender varchar(10),
     country_id varchar(5),
-    primary key id
+    created_at timestamp,
+    updated_at timestamp,
+    deleted_at timestamp,
+    primary key (id)
 );

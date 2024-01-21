@@ -4,6 +4,7 @@ import (
 	"fmt"
 	config "github.com/DrNikita/People/internal/db"
 	"github.com/DrNikita/People/internal/model"
+	"github.com/DrNikita/People/internal/service"
 	"github.com/DrNikita/People/internal/service/pagination"
 	"github.com/DrNikita/People/internal/status"
 	"github.com/DrNikita/People/internal/validation"
@@ -92,6 +93,7 @@ func CreatePerson(c *gin.Context) {
 	var person model.SupplementedPerson
 	var personFullInfo model.PersonFullInfo
 	dbConn := config.GetDBInstance()
+	tx := dbConn
 
 	if err := c.ShouldBindJSON(&person); err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorResponse(err))
@@ -112,11 +114,12 @@ func CreatePerson(c *gin.Context) {
 		SupplementedPerson: person,
 	}
 
-	err = dbConn.Debug().Create(&personFullInfo).Error
+	err = tx.Debug().Create(&personFullInfo).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorResponse(err))
 		return
 	}
+	go service.AddInfo(&personFullInfo, tx)
 
 	c.JSON(http.StatusCreated, response.New(person, fmt.Sprintf("person (ID : %d) created", personFullInfo.ID)))
 }
