@@ -26,3 +26,4 @@
 1) create db "people"
 2) migrate -path internal/db/migration/ -database "postgresql://postgres:postgres@localhost:5432/people?sslmode=disable" -verbose up
 3) migrate -path internal/db/migration/ -database "postgresql://postgres:postgres@localhost:5432/people?sslmode=disable" -verbose down
+4) swagger: http://localhost:8080/swagger/index.html
