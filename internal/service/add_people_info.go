@@ -9,21 +9,21 @@ import (
 )
 
 func AddInfo(person *model.PersonFullInfo, tx *gorm.DB) {
-	ageInfo, err := service.GetAgeInfo()
+	ageInfo, err := service.GetAgeInfo(person.Name)
 	if err != nil {
 		log.Error(err)
 		tx.Rollback()
 		return
 	}
 	log.Debug("get age info")
-	genderInfo, err := service.GetGenderInfo()
+	genderInfo, err := service.GetGenderInfo(person.Name)
 	if err != nil {
 		log.Error(err)
 		tx.Rollback()
 		return
 	}
 	log.Debug("get gender info")
-	countryInfo, err := service.GetCountryInfo()
+	countryInfo, err := service.GetCountryInfo(person.Name)
 	if err != nil {
 		log.Error(err)
 		tx.Rollback()

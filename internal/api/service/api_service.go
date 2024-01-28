@@ -9,10 +9,10 @@ import (
 	"net/http"
 )
 
-func GetAgeInfo() (ageInfo model.AgeInfo, err error) {
+func GetAgeInfo(name string) (ageInfo model.AgeInfo, err error) {
 	configs := config.GetConfigurationInstance()
 	client := http.Client{}
-	req, err := http.NewRequest("GET", configs.AgeUrl, nil)
+	req, err := http.NewRequest("GET", configs.AgeUrl+name, nil)
 	if err != nil {
 		log.Error(err)
 		return
@@ -30,10 +30,10 @@ func GetAgeInfo() (ageInfo model.AgeInfo, err error) {
 	return
 }
 
-func GetGenderInfo() (genderInfo model.GenderInfo, err error) {
+func GetGenderInfo(name string) (genderInfo model.GenderInfo, err error) {
 	configs := config.GetConfigurationInstance()
 	client := http.Client{}
-	req, err := http.NewRequest("GET", configs.GenderUrl, nil)
+	req, err := http.NewRequest("GET", configs.GenderUrl+name, nil)
 	if err != nil {
 		log.Error(err)
 		return
@@ -51,10 +51,10 @@ func GetGenderInfo() (genderInfo model.GenderInfo, err error) {
 	return
 }
 
-func GetCountryInfo() (countryInfo model.CountryInfo, err error) {
+func GetCountryInfo(name string) (countryInfo model.CountryInfo, err error) {
 	configs := config.GetConfigurationInstance()
 	client := http.Client{}
-	req, err := http.NewRequest("GET", configs.CountryUrl, nil)
+	req, err := http.NewRequest("GET", configs.CountryUrl+name, nil)
 	if err != nil {
 		log.Error(err)
 		return
