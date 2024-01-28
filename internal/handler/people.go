@@ -93,7 +93,7 @@ func CreatePerson(c *gin.Context) {
 	var person model.SupplementedPerson
 	var personFullInfo model.PersonFullInfo
 	dbConn := config.GetDBInstance()
-	tx := dbConn
+	tx := dbConn.Begin()
 
 	if err := c.ShouldBindJSON(&person); err != nil {
 		c.JSON(http.StatusBadRequest, response.ErrorResponse(err))
